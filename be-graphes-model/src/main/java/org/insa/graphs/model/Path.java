@@ -1,6 +1,7 @@
 package org.insa.graphs.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,23 +54,43 @@ public class Path {
      * 
      * 
      */
+    
+    
     public static Path createShortestPathFromNodes(Graph graph, List<Node> nodes)
             throws IllegalArgumentException {
         List<Arc> arcs = new ArrayList<Arc>();
-        float length;
-        for (int i = 0; i < (nodes.size()-1); i++) {
-        	length = Float.MAX_VALUE;
-        	if (nodes.get(i).hasSuccessors()) {
-        		int index_shortest = 0;
-        		int counter = 0;
-        		for (Arc a : nodes.get(i).getSuccessors()) {
-        			if (a.getDestination() == nodes.get(i+1) && a.getLength() < length) {
-        				index_shortest = counter;
-        				length = a.getLength();
+        if (nodes.size() == 0) {
+        	return new Path(graph);
+        }
+        else if (nodes.size() == 1) {
+        	return new Path(graph,nodes.get(0));
+        }
+        else {
+        	boolean shortest_arc_init;
+        	Arc shortest_arc = null;
+        	Iterator<Node> it = nodes.iterator();
+        	Node orig = it.next();
+        	while (it.hasNext()) {
+        		Node dest = it.next();
+        		shortest_arc_init = false;
+        		for (Arc a : orig.getSuccessors()) {
+        			if (a.getDestination().equals(dest)) {
+        				if (!shortest_arc_init) {
+        					shortest_arc = a;
+        					shortest_arc_init = true;
+        				}
+        				else if (a.getLength() < shortest_arc.getLength()) {
+        					shortest_arc = a;
+        				}
         			}
-        			counter++;
         		}
-        		arcs.add(nodes.get(i).getSuccessors().get(index_shortest));
+        		if (!shortest_arc_init) {
+        			throw new IllegalArgumentException();
+        		}
+        		else {
+        			arcs.add(shortest_arc);
+        			orig = dest;
+        		}
         	}
         }
         return new Path(graph, arcs);
