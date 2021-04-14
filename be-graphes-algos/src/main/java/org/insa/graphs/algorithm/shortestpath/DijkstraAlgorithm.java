@@ -49,6 +49,11 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	L_Origin.setMarked(true);
         	Nb_Marked_Nodes++;
         	for (Arc a : L_Origin.getCurrentNode().getSuccessors()) {
+        		// Small test to check allowed roads...
+                if (!data.isAllowed(a)) {
+                    continue;
+                }
+                
         		Node N_Destination = a.getDestination();
 				if (Label.Labels[N_Destination.getId()] == null) {
 					Label l = new Label(N_Destination, false, L_Origin.getCost() + a.getLength(), a);

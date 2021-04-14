@@ -77,6 +77,36 @@ public class ArcInspectorFactory {
                 return "Shortest path, only roads open for cars";
             }
         });
+        
+        // Only road allowed for bikes and length:
+        filters.add(new ArcInspector() {
+            @Override
+            public boolean isAllowed(Arc arc) {
+                return arc.getRoadInformation().getAccessRestrictions()
+                        .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
+                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+            }
+
+            @Override
+            public double getCost(Arc arc) {
+                return arc.getLength();
+            }
+
+            @Override
+            public int getMaximumSpeed() {
+                return GraphStatistics.NO_MAXIMUM_SPEED;
+            }
+
+            @Override
+            public Mode getMode() {
+                return Mode.LENGTH;
+            }
+
+            @Override
+            public String toString() {
+                return "Shortest path, only roads open for bikes";
+            }
+        });
 
         // Only road allowed for cars and time:
 
