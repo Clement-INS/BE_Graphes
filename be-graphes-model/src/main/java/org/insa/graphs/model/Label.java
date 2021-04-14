@@ -1,12 +1,12 @@
 package org.insa.graphs.model;
 
-import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
-public class Label {
+public final class Label implements Comparable<Label> {
 	/**
 	 * Node of this label
 	 */
-	private int current_node;
+	private Node current_node;
 	
 	/**
 	 * True when the node is known by the algorithm
@@ -16,25 +16,20 @@ public class Label {
 	/**
 	 * cost of the shortest path to this node
 	 */
-	private int cost;
+	private float cost;
 	
 	/**
 	 * Last arc to this node
 	 */
 	private Arc father;
 	
-	public static ArrayList<Label> Labels;
+	public static Label[] Labels;
 	
-	public Label(int n, boolean father) {
-		this.marked = false;
-		if (father) {
-			this.cost = 0;
-		}
-		else {
-			this.cost = Integer.MAX_VALUE;
-		}
-		this.father = null;
+	public Label(Node n, boolean Marked, float cost, Arc father) {
 		this.current_node = n;
+		this.marked = Marked;
+		this.cost = cost;
+		this.father = father;
 	}
 
 	public boolean isMarked() {
@@ -45,6 +40,10 @@ public class Label {
 		this.marked = marked;
 	}
 
+	public Node getCurrentNode() {
+		return current_node;
+	}
+	
 	public Arc getFather() {
 		return father;
 	}
@@ -53,13 +52,19 @@ public class Label {
 		this.father = father;
 	}
 
-	public int getCost() {
+	public float getCost() {
 		return this.cost;
 	}
 	
-	public void setCost(int cost) {
+	public void setCost(float cost) {
 		this.cost = cost;
 	}
+	
+	@Override
+	public int compareTo(Label l) {
+		return Float.compare(this.getCost(), l.getCost());
+	}
+	
 
 	
 	
