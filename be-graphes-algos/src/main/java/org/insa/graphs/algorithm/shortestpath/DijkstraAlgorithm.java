@@ -60,16 +60,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
                 
         		Node N_Destination = a.getDestination();
 				if (Label.Labels[N_Destination.getId()] == null) {
-					Label l = new Label(N_Destination, false, L_Origin.getCost() + a.getLength(), a);
+					Label l = new Label(N_Destination, false, (float) (L_Origin.getCost() + data.getCost(a)), a);
 					Label.Labels[N_Destination.getId()] = l;
     				BH.insert(l);
     				notifyNodeReached(l.getCurrentNode());
 				}
 				else {
 					if (Label.Labels[N_Destination.getId()].isMarked() == false) {
-	        			if (Label.Labels[N_Destination.getId()].getCost() > (L_Origin.getCost() + a.getLength())) {
+	        			if (Label.Labels[N_Destination.getId()].getCost() > (L_Origin.getCost() + data.getCost(a))) {
 	        				BH.remove(Label.Labels[N_Destination.getId()]);        					
-	        				Label.Labels[N_Destination.getId()].setCost(L_Origin.getCost() + a.getLength());
+	        				Label.Labels[N_Destination.getId()].setCost((float) (L_Origin.getCost() + data.getCost(a)));
 	        				Label.Labels[N_Destination.getId()].setFather(a);
 	        				BH.insert(Label.Labels[N_Destination.getId()]);
 	        			}
@@ -99,7 +99,12 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Collections.reverse(arcs);
         	
         	// Create the final solution.
-            solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+        	if (arcs.size() == 0) {
+        		solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, data.getOrigin()));
+        	}
+        	else {
+        		solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
+        	}
         }
         
         return solution;
