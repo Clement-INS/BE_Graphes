@@ -48,6 +48,10 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	BH.deleteMin();
         	L_Origin.setMarked(true);
         	Nb_Marked_Nodes++;
+        	notifyNodeMarked(L_Origin.getCurrentNode());
+        	if (L_Origin.getCurrentNode() == data.getDestination()) {
+        		break;
+        	}
         	for (Arc a : L_Origin.getCurrentNode().getSuccessors()) {
         		// Small test to check allowed roads...
                 if (!data.isAllowed(a)) {
@@ -59,6 +63,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 					Label l = new Label(N_Destination, false, L_Origin.getCost() + a.getLength(), a);
 					Label.Labels[N_Destination.getId()] = l;
     				BH.insert(l);
+    				notifyNodeReached(l.getCurrentNode());
 				}
 				else {
 					if (Label.Labels[N_Destination.getId()].isMarked() == false) {
