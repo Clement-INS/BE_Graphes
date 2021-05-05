@@ -11,6 +11,7 @@ import org.insa.graphs.model.io.BinaryGraphReader;
 import org.insa.graphs.model.io.GraphReader;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.insa.graphs.algorithm.AbstractSolution;
 import org.insa.graphs.algorithm.ArcInspectorFactory;
 import org.insa.graphs.model.Arc;
 import org.insa.graphs.model.Graph;
@@ -24,7 +25,7 @@ public class DijkstraAlgorithmTest {
 	
 	private static Path oneNodePath;
 	
-	private static ShortestPathSolution oneNodeSolution, simplePathSolution, mediumPathSolution, BFmediumSolution;
+	private static ShortestPathSolution oneNodeSolution, simplePathSolution, mediumPathSolution, BFmediumSolution, InfeasiblePathSolution;
 	
 	private static double cost;
 	
@@ -68,22 +69,36 @@ public class DijkstraAlgorithmTest {
 		Dijkstra = new DijkstraAlgorithm(data);
 		mediumPathSolution = Dijkstra.doRun();
 		
-		//faire BELMAN FORD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		BellmanFordAlgorithm BF = new BellmanFordAlgorithm(data);
+		BFmediumSolution = BF.doRun();
+		
+		//Init Infeasible path
+		data = new ShortestPathData(graph_insa, graph_insa.getNodes().get(75), graph_insa.getNodes().get(1255), ArcInspectorFactory.getAllFilters().get(0));
+		Dijkstra = new DijkstraAlgorithm(data);
+		InfeasiblePathSolution = Dijkstra.doRun();
 	}
 	
 	@Test
 	public void TestOneNodePath() {
 		assertEquals(0, oneNodePath.getOrigin().compareTo(oneNodeSolution.getPath().getOrigin()));
 		assertTrue(Math.abs(oneNodePath.getLength() - oneNodeSolution.getPath().getLength()) < 0.01);
+		assertTrue(oneNodeSolution.getPath().isValid());
 	}
 	
 	@Test
 	public void TestSimplePath() {
 		assertTrue(Math.abs(cost - simplePathSolution.getPath().getLength()) < 0.01);
+		assertTrue(simplePathSolution.getPath().isValid());
 	}
 	
 	@Test
 	public void TestMediumPath() {
-		
+		assertTrue(Math.abs(mediumPathSolution.getPath().getLength() - BFmediumSolution.getPath().getLength()) < 0.01);
+		assertTrue(mediumPathSolution.getPath().isValid());
+	}
+	
+	@Test
+	public void TestInfeasiblePath() {
+		assertEquals(InfeasiblePathSolution.getStatus(), AbstractSolution.Status.INFEASIBLE);
 	}
 }
