@@ -21,13 +21,13 @@ import org.insa.graphs.model.Path;
 
 public class DijkstraAlgorithmTest {
 	
-	private static Graph graph, graph_insa;
+	protected static Graph graph, graph_insa, graph_France;
 	
-	private static Path oneNodePath;
+	protected static Path oneNodePath;
 	
-	private static ShortestPathSolution oneNodeSolution, simplePathSolution, mediumPathSolution, BFmediumSolution, InfeasiblePathSolution;
+	protected static ShortestPathSolution oneNodeSolution, simplePathSolution, mediumPathSolution, BFmediumSolution, InfeasiblePathSolution, BigPathSolution;
 	
-	private static double cost;
+	protected static double cost;
 	
 	@BeforeClass
     public static void initAll() throws Exception{
@@ -40,6 +40,10 @@ public class DijkstraAlgorithmTest {
 		mapName = "/home/vigand/Documents/3A/Graphes/Maps/insa.mapgr";
 		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 		graph_insa = reader.read();
+		//get graph of map 
+		mapName = "/home/vigand/Documents/3A/Graphes/Maps/france.mapgr";
+		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
+		graph_France = reader.read();
 		
 		//init OneNodePath
 		Node node = graph.getNodes().get(0);
@@ -76,6 +80,12 @@ public class DijkstraAlgorithmTest {
 		data = new ShortestPathData(graph_insa, graph_insa.getNodes().get(75), graph_insa.getNodes().get(1255), ArcInspectorFactory.getAllFilters().get(0));
 		Dijkstra = new DijkstraAlgorithm(data);
 		InfeasiblePathSolution = Dijkstra.doRun();
+		
+		//Init big path
+		data = new ShortestPathData(graph_France, graph_France.getNodes().get(4551603), graph_France.getNodes().get(4042512), ArcInspectorFactory.getAllFilters().get(0));
+		Dijkstra = new DijkstraAlgorithm(data);
+		BigPathSolution = Dijkstra.doRun();
+		
 	}
 	
 	@Test
@@ -101,4 +111,5 @@ public class DijkstraAlgorithmTest {
 	public void TestInfeasiblePath() {
 		assertEquals(InfeasiblePathSolution.getStatus(), AbstractSolution.Status.INFEASIBLE);
 	}
+	
 }

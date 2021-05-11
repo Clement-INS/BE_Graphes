@@ -1,8 +1,6 @@
 package org.insa.graphs.model;
 
-import java.util.NoSuchElementException;
-
-public final class Label implements Comparable<Label> {
+public class Label implements Comparable<Label> {
 	/**
 	 * Node of this label
 	 */
@@ -16,7 +14,7 @@ public final class Label implements Comparable<Label> {
 	/**
 	 * cost of the shortest path to this node
 	 */
-	private float cost;
+	protected float cost;
 	
 	/**
 	 * Last arc to this node
@@ -60,9 +58,13 @@ public final class Label implements Comparable<Label> {
 		this.cost = cost;
 	}
 	
+	public float getTotalCost() {
+		return this.cost;
+	}
+	
 	@Override
 	public int compareTo(Label l) {
-		return Float.compare(this.getCost(), l.getCost());
+		return Float.compare(this.getTotalCost(), l.getTotalCost());
 	}
 	
 
