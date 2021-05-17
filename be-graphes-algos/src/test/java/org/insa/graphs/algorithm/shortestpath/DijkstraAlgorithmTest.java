@@ -40,10 +40,10 @@ public class DijkstraAlgorithmTest {
 		mapName = "/home/vigand/Documents/3A/Graphes/Maps/insa.mapgr";
 		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
 		graph_insa = reader.read();
-		//get graph of map 
+		/*//get graph of map 
 		mapName = "/home/vigand/Documents/3A/Graphes/Maps/france.mapgr";
 		reader = new BinaryGraphReader(new DataInputStream(new BufferedInputStream(new FileInputStream(mapName))));
-		graph_France = reader.read();
+		graph_France = reader.read();*/
 		
 		//init OneNodePath
 		Node node = graph.getNodes().get(0);
@@ -81,10 +81,10 @@ public class DijkstraAlgorithmTest {
 		Dijkstra = new DijkstraAlgorithm(data);
 		InfeasiblePathSolution = Dijkstra.doRun();
 		
-		//Init big path
+		/*//Init big path
 		data = new ShortestPathData(graph_France, graph_France.getNodes().get(4551603), graph_France.getNodes().get(4042512), ArcInspectorFactory.getAllFilters().get(0));
 		Dijkstra = new DijkstraAlgorithm(data);
-		BigPathSolution = Dijkstra.doRun();
+		BigPathSolution = Dijkstra.doRun();*/
 		
 	}
 	
@@ -111,5 +111,22 @@ public class DijkstraAlgorithmTest {
 	public void TestInfeasiblePath() {
 		assertEquals(InfeasiblePathSolution.getStatus(), AbstractSolution.Status.INFEASIBLE);
 	}
+	
+/*	@Test
+	public void TestBigPath() {
+		ShortestPathData data; 
+		DijkstraAlgorithm Dijkstra; 
+		ShortestPathSolution DijkstraSol;
+		
+		float cost = mediumPathSolution.getPath().getLength();
+		for (int i = (BigPathSolution.getPath().getArcs().size()-1); i >= 0; i--) {
+			data = new ShortestPathData(graph_France, graph_France.getNodes().get(4551603), graph_France.getNodes().get(BigPathSolution.getPath().getArcs().get(i).getDestination().getId()), ArcInspectorFactory.getAllFilters().get(0));
+			Dijkstra = new DijkstraAlgorithm(data);
+			DijkstraSol = Dijkstra.doRun();
+			assertTrue(Math.abs(cost - DijkstraSol.getPath().getLength()) < 0.01);
+			cost = cost - (float)data.getCost(BigPathSolution.getPath().getArcs().get(i));
+		}
+	}*/
+	
 	
 }

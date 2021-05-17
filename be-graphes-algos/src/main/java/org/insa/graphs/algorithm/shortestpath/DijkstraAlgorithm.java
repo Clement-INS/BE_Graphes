@@ -41,11 +41,8 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         // initialization
         Label.Labels = new Label[graph.getNodes().size()];
-        for (Node n : graph.getNodes()) {
-        	if (n.equals(data.getOrigin())) {
-        		insert(BH, n, true, (float)0.0, null, (float)n.getPoint().distanceTo(data.getDestination().getPoint()));
-        	}
-        }
+        Node n = data.getOrigin();
+        insert(BH, n, true, (float)0.0, null, (float)n.getPoint().distanceTo(data.getDestination().getPoint()));
         
         //iterations
         while (Nb_Marked_Nodes != nbNodes && !BH.isEmpty()){
