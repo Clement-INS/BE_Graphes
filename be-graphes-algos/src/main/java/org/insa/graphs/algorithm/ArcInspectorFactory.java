@@ -84,7 +84,7 @@ public class ArcInspectorFactory {
             public boolean isAllowed(Arc arc) {
                 return arc.getRoadInformation().getAccessRestrictions()
                         .isAllowedForAny(AccessMode.BICYCLE, EnumSet.complementOf(EnumSet
-                                .of(AccessRestriction.FORBIDDEN, AccessRestriction.PRIVATE)));
+                                .of(AccessRestriction.PRIVATE)));
             }
 
             @Override
